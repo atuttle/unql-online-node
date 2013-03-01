@@ -1,25 +1,38 @@
 {
-  "author": "Sam Gentle <sam@samgentle.com>",
-  "name": "unql",
-  "description": "SQL-like frontend for CouchDB",
+  "contributors": [
+    {
+      "name": "Adam Tuttle (-online port)",
+      "email": "adam@fusiongrokker.com",
+      "url": "http://fusiongrokker.com"
+    },
+    {
+      "name": "Sam Gentle",
+      "email": "sam@samgentle.com"
+    }
+  ],
+  "name": "unql-online",
+  "description": "SQL-like frontend for CouchDB, ported to be usable in web apps",
   "version": "0.0.1",
-  "bin":"./bin/unql",
-  "licenses":     [{
-    "type":       "MIT",
-    "url":        "http://www.opensource.org/licenses/MIT"
-  }],  
+  "keywords": ["couchdb", "couch", "query", "nosql", "sql"],
   "repository": {
     "type": "git",
-    "url": "git://github.com/sgentle/unql-node.git"
+    "url": "git://github.com/atuttle/unql-online-node.git"
   },
-  "main": "unql.coffee",
+  "bugs": {
+    "url": "https://github.com/atuttle/unql-online-node/issues"
+  },
+  "main": "unql-online.js",
+  "licenses": [
+    {
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
   "dependencies": {
-    "coffee-script": "*",
     "request": "*",
-    "optimist": "*",
-    "prompt": "*",
-    "burrito": "*"    
+    "burrito": "*"
   },
+  "readmeFilename": "README.markdown",
   "devDependencies": {},
   "optionalDependencies": {},
   "engines": {
