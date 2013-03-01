@@ -1,4 +1,36 @@
 # UnQL for Node and CouchDB
+
+## DO NOT USE THIS PROJECT... SORTA.
+
+As detailed in the section **"How it works"** below, this is a patently terrible idea if you need to run at any sort of scale. However, it can drastically improve development time, helping you reach that coveted Minimum Viable Product. (Thats what I'm doing with it anyway...) Once your concept is proven, you'll have to come behind and put in permanent views to replace this utility.
+
+So with that caveat in mind, I present to you what took me less than an hour to do and (still) has no tests: A web-app friendly port of the [CLI tool unql-node](https://github.com/sgentle/unql-node)
+
+### Yeah, I get it, just show me the code...
+
+```js
+var unql = require('unql-online')('http://user:password@couchserver.com:5984');
+
+unql.query('delete from photos where type="instagram"', function(err, results){
+	console.log(results);
+});
+```
+
+Or if you would rather assemble the connection from its constituent atoms:
+
+```js
+var unql = require('unql-online');
+unql.connect('couchserver.com', 80, 'username', 'password');
+```
+
+Or more inline?
+
+```js
+var unql = require('unql-online').connect('couchserver.com', 80, 'username', 'password');
+```
+
+This concludes my contribution to the project... Really, I told you I didn't do much. What follows is all taken from the [original readme](https://github.com/sgentle/unql-node#readme) so you don't have to have to refer to both at the same time.
+
 ## SQL for NoSQL, just what the doctor ordered
 
 So you've got your fancy new CouchDB instance running. You're ready to change the world with your local mobile social webappsitething just as soon as your $5m funding round closes.
@@ -25,12 +57,6 @@ Uh oh.
 ```
 > update checkins set location = "Gretchen's Flower Shop" where username=="bob" && location=="Gretchen's Pleasure Parlor"
 ```
-
-## How does it work?
-
-In a word: slowly. Each select makes a CouchDB temporary view with a map function that only emits if your condition is true. Delete/Update does the same, plus an additional bulk query with the results. Insert is pretty fast, though.
-
-Temporary views are basically performance catnip, so if you do one with a big database don't be surprised if couch starts drooling or tripping over its own feet. Above all, *do not build strings and send them to UnQL ever.* This is not a library for interacting with Couch from your code, just a way to run ad-hoc queries easily.
 
 ## How do I get it?
 
@@ -70,26 +96,17 @@ Currently not supported:
 
 If you want one of the things that isn't supported, then pretty please send me a pull request. Implementing things is way easier when you don't have to implement them.
 
-## WARNING: Not For Scale!
-
-As previously mentioned, this is basically a patently terrible idea if you need to run at any sort of scale. However, it can drastically improve development time, helping you reach that coveted Minimum Viable Product. (Thats what I'm doing with it anyway...) Once your concept is proven, you'll have to come behind and put in permanent views to replace this utility.
-
-### Yeah, I get it, just show me the code...
-
-```
-var unql = require('unql-online')('http://user:password@couchserver.com:5984');
-unql.query('delete from photos where type="instagram"', function(err, results){
-	console.log(results);
-});
-```
-
-
 ## Should I use it for my CouchDB instance running on the ISS and/or powering the life support machines for a cancer ward full of photogenic orphans?
 
 Sweet isaacs, no. This code is about as raw as it gets. There are no tests and I don't even have any kind of fancy parse chain, just a big stack o' regular expressions. I got it to a point where it did all the things I needed and then released it into the wild.
 
 While I can't think of a way that a SELECT could delete all your data, I'm not yet comfortable saying it's impossible, especially if you're on Windows, have strange locale settings, or sneeze really hard.
 
+## How does it work?
+
+In a word: slowly. Each select makes a CouchDB temporary view with a map function that only emits if your condition is true. Delete/Update does the same, plus an additional bulk query with the results. Insert is pretty fast, though.
+
+Temporary views are basically performance catnip, so if you do one with a big database don't be surprised if couch starts drooling or tripping over its own feet. Above all, *do not build strings and send them to UnQL ever.* This is not a library for interacting with Couch from your code, just a way to run ad-hoc queries easily.
 
 ## CouchDB sucks. I only use Cassandra, but you've probably never heard of it. How about supporting other NoSQL data stores?
 
