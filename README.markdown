@@ -78,7 +78,9 @@ As previously mentioned, this is basically a patently terrible idea if you need 
 
 ```
 var unql = require('unql-online')('http://user:password@couchserver.com:5984');
-unql.query('delete from photos where type="instagram"', function(err, results){});
+unql.query('delete from photos where type="instagram"', function(err, results){
+	console.log(results);
+});
 ```
 
 
