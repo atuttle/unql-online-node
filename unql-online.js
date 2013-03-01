@@ -48,6 +48,10 @@ module.exports = function(_couchurl){
 
 	return {
 		query: processExpr
+		,connect: function(server, port, user, pass){
+			couchURL = 'http://' + user + ':' + pass + '@' + server + ':' + port;
+			return this;
+		}
 	};
 }
 
