@@ -12,6 +12,33 @@ pp = function(x) {
 	return util.inspect(x, false, 2, !(process.platform === 'win32' || process.env.NODE_DISABLE_COLORS));
 };
 
+processExpr = function(expr, cb) {
+	var args, i, j, match, matched, matcher, x, _i, _len;
+	matched = false;
+	for (i = _i = 0, _len = matchers.length; _i < _len; i = ++_i) {
+		matcher = matchers[i];
+		if (match = expr.match(matcher)) {
+			args = (function() {
+				var _j, _len1, _results;
+				_results = [];
+				for (j = _j = 0, _len1 = match.length; _j < _len1; j = ++_j) {
+					x = match[j];
+					if (j !== 0) {
+						_results.push(x);
+					}
+				}
+				return _results;
+			})();
+			handlers[i].apply(handlers, __slice.call(args).concat([cb]));
+			matched = true;
+			break;
+		}
+	}
+	if (!matched) {
+		return cb("No such command");
+	}
+};
+
 module.exports = function(_couchurl){
 	couchAuth = null;
 	couchURL = _couchurl || 'http://localhost:5984';
@@ -20,32 +47,7 @@ module.exports = function(_couchurl){
 	}
 
 	return {
-		query: function(expr, cb) {
-			var args, i, j, match, matched, matcher, x, _i, _len;
-			matched = false;
-			for (i = _i = 0, _len = matchers.length; _i < _len; i = ++_i) {
-				matcher = matchers[i];
-				if (match = expr.match(matcher)) {
-					args = (function() {
-						var _j, _len1, _results;
-						_results = [];
-						for (j = _j = 0, _len1 = match.length; _j < _len1; j = ++_j) {
-							x = match[j];
-							if (j !== 0) {
-								_results.push(x);
-							}
-						}
-						return _results;
-					})();
-					handlers[i].apply(handlers, __slice.call(args).concat([cb]));
-					matched = true;
-					break;
-				}
-			}
-			if (!matched) {
-				return cb("No such command");
-			}
-		}
+		query: processExpr
 	};
 }
 
