@@ -12,7 +12,7 @@
   ],
   "name": "unql-online",
   "description": "SQL-like frontend for CouchDB, ported to be usable in web apps",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": ["couchdb", "couch", "query", "nosql", "sql"],
   "repository": {
     "type": "git",
